@@ -1,0 +1,26 @@
+Sub select_and_merge()
+
+
+
+Dim oTableRge As Range
+Dim rngTable As Range
+Set oTableRge = ActiveDocument.Tables(1).Range
+
+MsgBox oTableRge.Cells(1).Range.Text
+MsgBox oTableRge.Cells(4).Range.Text
+MsgBox oTableRge.Cells(7).Range.Text
+MsgBox oTableRge.Cells(10).Range.Text
+
+Dim oCell1 As Cell
+Dim oCell2 As Cell
+Set oCell1 = oTableRge.Cells(4)
+Set oCell2 = oTableRge.Cells(7)
+
+
+Set rngTable = ActiveDocument.Range(Start:=oCell1.Range.Start, End:=oCell2.Range.End)
+rngTable.Select
+Selection.Cells.Merge
+
+
+
+End Sub

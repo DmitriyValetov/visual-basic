@@ -1,0 +1,20 @@
+Sub RowsCount()
+
+Dim Tb As Table
+Set Tb = ActiveDocument.Tables(1)
+
+Dim counter As Integer
+counter = 0
+Dim columns_num As Integer
+columns_num = 15
+
+'For i = 1 To Tb.Rows.Count
+'    If Tb.Rows(1).Cells.Count = columns_num Then
+'        counter = counter + 1
+'    End If
+'
+'Next i
+
+MsgBox (Tb.Rows(1).Cells.Count)
+
+End Sub

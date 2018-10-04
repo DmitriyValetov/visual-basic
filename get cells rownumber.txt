@@ -1,0 +1,14 @@
+Sub test()
+
+Dim oTableRge As Range
+Dim oCell As Cell
+
+Set oTableRge = ActiveDocument.Tables(1).Range
+Set oCell = oTableRge.Cells(1)
+
+MsgBox oCell.Range.Text
+MsgBox oCell.Row
+
+
+
+End Sub

@@ -1,0 +1,78 @@
+Sub ScratchMacro()
+
+
+
+Set oTableRge = ActiveDocument.Tables(1).Range
+Set oCell = oTableRge.Cells(1)
+
+'MsgBox oTableRge.Cells.Count
+'MsgBox oCell.Range.Text
+' MsgBox oCell.Row
+
+
+Dim counter As Integer
+counter = 0
+Dim columns_num As Integer
+columns_num = 15
+Dim triple As Integer
+triple = 0
+Dim empty_str As String
+empty_str = oTableRge.Cells(20).Range.Text
+Dim str As String
+
+'
+'MsgBox (oTableRge.Cells(29).Range.Text = empty_str)
+'MsgBox (oTableRge.Cells(30).Range.Text = empty_str)
+'
+'For i = 1 To oTableRge.Cells.Count
+'    If oTableRge.Cells(i).Range.Text = empty_str Then
+'        counter = counter + 1
+'    End If
+'     'MsgBox (oTableRge.Cells(i).Range.Text)
+'
+'Next i
+'
+'
+'MsgBox (counter)
+'
+'
+'counter = 0
+
+
+
+'For i = 1 To oTableRge.Cells.Count
+'    str = oTableRge.Cells(i).Range.Text
+'    If triple = 3 Then
+'        counter = counter + 1
+'        triple = 0
+'    ElseIf str = empty_str And triple = 0 Then
+'        triple = triple + 1
+'    ElseIf Not str = empty_str And Not str = "" And Not str = " " And triple = 1 Then
+'        MsgBox (str)
+'        triple = triple + 1
+'
+'    ElseIf str = empty_str And triple = 2 Then
+'        triple = triple + 1
+'        MsgBox (str)
+'    Else
+'        triple = 0
+'    End If
+'
+'Next i
+'
+'MsgBox (counter)
+
+
+'For i = 1 To oTableRge.Cells.Count
+'    str = oTableRge.Cells(i).Range.Text
+'    If i >= 29 Then
+'        MsgBox str
+'    End If
+'Next i
+
+MsgBox oTableRge.Cells(29).Range.Text = oTableRge.Cells(31).Range.Text
+MsgBox oTableRge.Cells(31).Range.Text = oTableRge.Cells(32).Range.Text
+MsgBox oTableRge.Cells(32).Range.Text = oTableRge.Cells(34).Range.Text
+
+End Sub
+

@@ -1,0 +1,122 @@
+Sub merge_for_tekila()
+
+Dim main_tbl As Table
+Set main_tbl = ActiveDocument.Tables(1)
+
+
+Set Cells = ActiveDocument.Tables(1).Range.Cells
+Set stack1 = New Collection
+Set stack2 = New Collection
+Dim Flag As Integer
+Flag = 0
+Dim merge_height As Integer
+merge_height = 0
+
+
+For i = 4045 To Cells.Count
+    
+    ' catch end of file
+    On Error GoTo ErrorHandler
+    
+    ' catch the first pattern with triple header
+    If Flag = 0 And Cells(i).Range.Text = Cells(32).Range.Text And Cells(i).ColumnIndex = 1 And Cells(i + 2).Range.Text = Cells(34).Range.Text And Cells(i + 2).ColumnIndex = 3 Then
+        ' avoid first in two headers
+        If Cells(i + 3).ColumnIndex = 1 And Cells(i + 3 + 14).ColumnIndex = 15 Then
+            i = i + 3 ' we are at 1 stack - raise the flag
+            Flag = 1
+        End If
+        
+    ' catch the empty string captured pattern
+    ElseIf Flag = 0 And Cells(i).ColumnIndex = 1 And Cells(i + 1).ColumnIndex = 1 Then
+        If Cells(i + 1).ColumnIndex = 1 And Cells(i + 1 + 14).ColumnIndex = 15 Then
+            i = i + 1 ' we are at 1 stack - raise the flag
+            Flag = 1
+        End If
+    End If
+    
+    
+    ' push in stacks the cells indices
+    If Flag = 1 Then
+        If Cells(i).ColumnIndex = 1 Then
+            stack1.Add i
+        ElseIf Cells(i).ColumnIndex = 2 Then
+            stack2.Add i
+        End If
+    End If
+    
+    
+    
+    
+    ' check the end of pattern
+    If Flag = 1 And Cells(i + 1).ColumnIndex = 1 And Cells(i + 2).ColumnIndex = 1 Or Cells(i + 1).ColumnIndex = 1 And Cells(i + 1 + 3).ColumnIndex = 1 Then
+    ' this is empty row ahead or another triplet
+
+
+EndOfFile_event:
+
+        Flag = 0
+        
+        ' merge
+        If Not stack1.Count = stack2.Count Then
+            MsgBox "Call Dmitriy Valetov (311k)"
+        End If
+        
+        merge_height = stack1.Count - 1
+        
+        
+        If merge_height > 0 Then
+        ' this is check for simple block: empty line 15 columns and empty line again - here is nothing to merge
+        
+            'MsgBox Cells(stack1(1)).Range.Text
+            'MsgBox Cells(stack1(stack1.Count)).Range.Text
+            
+            
+            Set rngTable = ActiveDocument.Range(Start:=Cells(stack1(1)).Range.Start, End:=Cells(stack1(stack1.Count)).Range.End)
+            rngTable.Select
+            Selection.Cells.Merge
+                
+        
+            'MsgBox Cells(stack2(1)).Range.Text
+            'MsgBox Cells(stack2(stack2.Count) - merge_height).Range.Text
+                
+            Set rngTable = ActiveDocument.Range(Start:=Cells(stack2(1)).Range.Start, End:=Cells(stack2(stack2.Count) - merge_height).Range.End)
+            rngTable.Select
+            Selection.Cells.Merge
+            
+        End If
+        
+        
+        Set stack1 = New Collection
+        Set stack2 = New Collection
+        
+        i = i - 2 * merge_height ' -1 is done above
+        
+    End If
+    
+Next i
+
+' amount of blocks merged
+MsgBox blocks_done
+
+Exit Sub
+
+ErrorHandler:
+    Select Case Err.Number
+    Case 5941:
+        i = Cells.Count - 1
+        GoTo EndOfFile_event
+    Case Default:
+        GoTo OtherError
+    End Select
+    
+OtherError:
+    Debug.Print "OtherError!"
+    Err.Raise (Err.Number)
+    Exit Sub
+
+
+End Sub
+
+
+
+
